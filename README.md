@@ -14,6 +14,20 @@ example:
 sh ./scaffold.sh my-app-api
 ```
 
+## Create new routers:
+
+Make sure that you are inside the project root and run the `create-router.sh` script relative to your current location and include a singular router name.
+
+```sh
+sh ../path/to/script/create-router.sh <singular-router-name>
+```
+
+example:
+
+```sh
+sh ../utils/create-router.sh user
+```
+
 ## API Collections:
 
 You can import API collections and add to it in the collections folder after scaffolding your project, ideally these collections work properly with ThunderClient extension for VS code.

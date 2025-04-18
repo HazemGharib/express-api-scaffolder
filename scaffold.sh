@@ -1,18 +1,35 @@
 # Scaffold a new project using ExpressJS
-# Usage: sh ./scaffold.sh <project-name>
-# Check if project name is provided
+# Usage: sh ./scaffold.sh <project-"name">
+# Example: sh ./scaffold.sh my-project
+
+# Pluralize a word
+pluralize() {
+  local word="$1"
+  # Check if the word ends with 'y' and change 'y' to 'ies'
+  if [[ "$word" =~ y$ ]]; then
+    echo "${word%y}ies"
+  # Check if the word ends with 's' or 'x' and change 's' to 'es'
+  elif [[ "$word" =~ [sx]$ ]]; then
+    echo "${word}es"
+  # Otherwise just append an 's'
+  else
+    echo "${word}s"
+  fi
+}
+
+# Check if project "name" is provided
 if [ -z "$1" ]; then
-  echo "Please provide a project name."
+  echo "Please provide a project "name"."
   exit 1
 fi
-# Check if project name is valid
+# Check if project "name" is valid
 if [[ ! "$1" =~ ^[a-zA-Z0-9_-]+$ ]]; then
-  echo "Project name can only contain letters, numbers, dashes, and underscores."
+  echo "Project "name" can only contain letters, numbers, dashes, and underscores."
   exit 1
 fi
-# Check if project name already exists
+# Check if project "name" already exists
 if [ -d "$1" ]; then
-  echo "Project name already exists. Please choose a different name."
+  echo "Project "name" already exists. Please choose a different "name"."
   exit 1
 fi
 # Check node version
@@ -44,7 +61,7 @@ yarn add typescript ts-node @types/node nodemon --dev
 # Initialize typescript with target es2020
 npx tsc --init --target es2020
 # Replace tsconfig.json content
-cat <<EOL > tsconfig.json
+cat <<EOF > tsconfig.json
 {
   "compilerOptions": {
     "target": "es2020",
@@ -59,15 +76,140 @@ cat <<EOL > tsconfig.json
   "exclude": ["node_modules"]
 }
 
-EOL
+EOF
 # Install express and @types/express zod
 yarn add express @types/express zod
 # Make src directory
 mkdir src
+
+ROUTER_NAME=sample
+# Pluralize the router "name"
+PLURAL_ROUTER_NAME=$(pluralize "$ROUTER_NAME")
+
+# Create collections directory
+mkdir collections
+# Create collections/<project_name>.json file
+cat <<EOL > collections/$1.json
+{
+    "clientName": "Thunder Client",
+    "collectionName": "${1}",
+    "collectionId": "50401041-1695-4c8e-8830-274fcbc73742",
+    "dateExported": "2025-04-18T07:29:28.522Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+      {
+          "_id": "bd5e5d51-3cf8-439a-b0dc-edd9fc3cdc40",
+          "colId": "50401041-1695-4c8e-8830-274fcbc73742",
+          "containerId": "",
+          "name": "$PLURAL_ROUTER_NAME-health",
+          "url": "http://localhost:3000/health",
+          "method": "GET",
+          "sortNum": 10000,
+          "created": "2025-04-18T07:26:08.307Z",
+          "modified": "2025-04-18T07:26:08.307Z",
+          "headers": []
+      },
+      {
+          "_id": "d4ce6f0a-4c65-4e87-a42d-8f503e55a543",
+          "colId": "50401041-1695-4c8e-8830-274fcbc73742",
+          "containerId": "",
+          "name": "$PLURAL_ROUTER_NAME-get-all",
+          "url": "http://localhost:3000/$PLURAL_ROUTER_NAME",
+          "method": "GET",
+          "sortNum": 20000,
+          "created": "2025-04-18T07:26:08.308Z",
+          "modified": "2025-04-18T07:26:08.308Z",
+          "headers": []
+      },
+      {
+          "_id": "ace8e68f-5b5d-4b0e-ad8f-9c7e39c2f8e0",
+          "colId": "50401041-1695-4c8e-8830-274fcbc73742",
+          "containerId": "",
+          "name": "$PLURAL_ROUTER_NAME-get-by-id",
+          "url": "http://localhost:3000/$PLURAL_ROUTER_NAME/1",
+          "method": "GET",
+          "sortNum": 30000,
+          "created": "2025-04-18T07:26:08.309Z",
+          "modified": "2025-04-18T07:26:08.309Z",
+          "headers": []
+      },
+      {
+          "_id": "ba5d9af2-5dc1-438e-b76a-ab59b49a4b48",
+          "colId": "50401041-1695-4c8e-8830-274fcbc73742",
+          "containerId": "",
+          "name": "$PLURAL_ROUTER_NAME-post",
+          "url": "http://localhost:3000/$PLURAL_ROUTER_NAME",
+          "method": "POST",
+          "sortNum": 40000,
+          "created": "2025-04-18T07:26:08.310Z",
+          "modified": "2025-04-18T07:26:08.310Z",
+          "headers": [],
+          "body": {
+              "type": "json",
+              "raw": "{\n  \"id\": \"1\",\n  \"text\": \"test\"\n}",
+              "form": []
+          }
+      },
+      {
+          "_id": "049423d0-e285-4f4a-996a-a13c04f64b74",
+          "colId": "50401041-1695-4c8e-8830-274fcbc73742",
+          "containerId": "",
+          "name": "$PLURAL_ROUTER_NAME-put",
+          "url": "http://localhost:3000/$PLURAL_ROUTER_NAME/1",
+          "method": "PUT",
+          "sortNum": 50000,
+          "created": "2025-04-18T07:26:08.311Z",
+          "modified": "2025-04-18T07:26:08.311Z",
+          "headers": [],
+          "body": {
+              "type": "json",
+              "raw": "{\n  \"text\": \"test\"\n}",
+              "form": []
+          }
+      },
+      {
+          "_id": "4000716a-f45a-406a-9a03-6fddc76fddfe",
+          "colId": "50401041-1695-4c8e-8830-274fcbc73742",
+          "containerId": "",
+          "name": "$PLURAL_ROUTER_NAME-patch",
+          "url": "http://localhost:3000/$PLURAL_ROUTER_NAME/1",
+          "method": "PATCH",
+          "sortNum": 60000,
+          "created": "2025-04-18T07:26:08.312Z",
+          "modified": "2025-04-18T07:26:08.312Z",
+          "headers": [],
+          "body": {
+              "type": "json",
+              "raw": "{\n  \"text\": \"test\"\n}",
+              "form": []
+          }
+      },
+      {
+          "_id": "ec49fd57-1b41-4170-9746-cb4015d49c65",
+          "colId": "50401041-1695-4c8e-8830-274fcbc73742",
+          "containerId": "",
+          "name": "$PLURAL_ROUTER_NAME-delete",
+          "url": "http://localhost:3000/$PLURAL_ROUTER_NAME/1",
+          "method": "DELETE",
+          "sortNum": 70000,
+          "created": "2025-04-18T07:26:08.313Z",
+          "modified": "2025-04-18T07:26:08.313Z",
+          "headers": []
+      }
+    ],
+    "ref": "fWTzTa2Fas8xVnaS-gz7_gz1_RsASQbD-prNs9pxgQxh4_swOTR9bzT-RGobXxHgcXEjbC9WRW3oIISqyUzgEw"
+}
+
+EOL
+
+# Create router using create-router.sh script
+sh ../utils/create-router.sh $ROUTER_NAME
+
 # Create src/index.ts file
-cat <<"EOL" > src/index.ts
+cat <<EOF > src/index.ts
 import express, { Request, Response } from 'express';
-import { messagesRouter } from './routers/messagesRouter/messagesRouter';
+import { ${PLURAL_ROUTER_NAME}Router } from './routers/${PLURAL_ROUTER_NAME}Router/${PLURAL_ROUTER_NAME}Router';
 import { logger } from './middlewares/logger/logger';
 
 const app = express();
@@ -77,117 +219,17 @@ app.use(express.json());
 
 app.use(logger);
 
-app.use('/messages', messagesRouter);
+app.use('/${PLURAL_ROUTER_NAME}', ${PLURAL_ROUTER_NAME}Router);
 
 app.get(['/', '/health'], (req: Request, res: Response) => {
   res.send({ status: 'OK' });
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(\`Server is running on port \${PORT} at http://localhost:\${PORT}\`);
 });
 
-EOL
-
-# Create src/routers directory
-mkdir src/routers
-# Create src/routers/messagesRouter directory
-mkdir src/routers/messagesRouter
-# Create src/routers/messagesRouter/messagesRouter.ts file
-cat <<"EOL" > src/routers/messagesRouter/messagesRouter.ts
-import { Router, Request, Response } from 'express';
-import { validateRequest } from '../../middlewares/validation/validateRequest';
-import { idParamSchema, messageBodySchema, messageUpdateBodySchema } from './schema';
-
-export const messagesRouter = Router();
-
-// Get all messages
-messagesRouter.get(
-  '/',
-  (req: Request, res: Response) => {
-  res.send({ message: 'Get all messages' });
-});
-
-// Get a message by ID
-messagesRouter.get(
-  '/:id',
-  validateRequest({
-    params: idParamSchema,
-  }),
-  (req: Request, res: Response) => {
-    const { id } = req.params;
-    res.send({ message: `Message with ID: ${id}` });
-});
-
-// Create a new message
-messagesRouter.post(
-  '/',
-  validateRequest({
-    body: messageBodySchema,
-  }),
-  (req: Request, res: Response) => {
-    const { id, text } = req.body;
-    res.send({ message: `Message with ID: ${id} and text: ${text}` });
-});
-
-// Update a message by ID
-messagesRouter.patch(
-  '/:id',
-  validateRequest({
-    params: idParamSchema,
-    body: messageUpdateBodySchema,
-  }),
-  (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { text } = req.body;
-    res.send({ message: `Message with ID: ${id} updated with text: ${text}` });
-});
-
-// Update a message by ID (PUT)
-messagesRouter.put(
-  '/:id',
-  validateRequest({
-    params: idParamSchema,
-    body: messageUpdateBodySchema,
-  }),
-  (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { text } = req.body;
-    res.send({ message: `Message with ID: ${id} updated with text: ${text}` });
-});
-
-// Delete a message by ID
-messagesRouter.delete(
-  '/:id',
-  validateRequest({
-    params: idParamSchema,
-  }),
-  (req: Request, res: Response) => {
-    const { id } = req.params;
-    res.send({ message: `Message with ID: ${id} deleted` });
-});
-
-
-EOL
-
-# Create src/routers/messagesRouter/schema.ts file
-cat <<"EOL" > src/routers/messagesRouter/schema.ts
-import { coerce, string, object } from 'zod';
-
-export const idParamSchema = object({
-  id: coerce.number().min(1),
-});
-
-export const messageBodySchema = object({
-  id: coerce.number().min(1),
-  text: string().min(1),
-});
-
-export const messageUpdateBodySchema = object({
-  text: string().min(1),
-});
-
-EOL
+EOF
 
 # Create src/middlewares directory
 mkdir src/middlewares
@@ -268,9 +310,9 @@ This is a FeathersJS project scaffolded using the scaffold.sh script.
     \`\`\`
 3. Open your browser and go to http://localhost:3000/
 4. You should see a message saying {"status": "OK"}.
-5. You can also use a tool like Postman to send a POST request to the /messages endpoint.
-    1. Set the URL to http://localhost:3000/messages
-    2. Set the method to POST
+5. You can also use a tool like Postman to send a POST request to the /${PLURAL_ROUTER_NAME} endpoint.
+    1. Set the URL to http://localhost:3000/${PLURAL_ROUTER_NAME}
+    2. Set the "method" to POST
     3. Set the body to raw JSON and add a message object like this:
     \`\`\`json
     {
@@ -280,140 +322,15 @@ This is a FeathersJS project scaffolded using the scaffold.sh script.
     \`\`\`
     4. Send the request
     5. You should see the message in the response.
-6. You can also use a tool like Postman to send a GET request to the /messages/:id endpoint.
-    1. Set the URL to http://localhost:3000/messages/1
-    2. Set the method to GET
+6. You can also use a tool like Postman to send a GET request to the /${PLURAL_ROUTER_NAME}/:id endpoint.
+    1. Set the URL to http://localhost:3000/${PLURAL_ROUTER_NAME}/1
+    2. Set the "method" to GET
     3. Send the request
     4. You should see the message in the response.
 ## License
 This project is licensed under the MIT License.
 ## Author
-This project was created by Hazem Gharib
-
-EOL
-
-# Create collections directory
-mkdir collections
-# Create collections/<project_name>.json file
-cat <<EOL > collections/$1.json
-{
-    "clientName": "Thunder Client",
-    "collectionName": "$1",
-    "collectionId": "bcf0437a-a1fe-4c75-b7bd-ff725587b86e",
-    "dateExported": "2025-04-14T15:15:31.181Z",
-    "version": "1.2",
-    "folders": [
-        {
-            "_id": "e4b3ee29-0c93-41e9-a2e7-9738608cd4c3",
-            "name": "Messages",
-            "containerId": "",
-            "created": "2025-04-14T15:13:26.606Z",
-            "sortNum": 10000
-        }
-    ],
-    "requests": [
-        {
-            "_id": "6a3f3699-831f-4f55-aa9d-db5f1622f2e8",
-            "colId": "bcf0437a-a1fe-4c75-b7bd-ff725587b86e",
-            "containerId": "e4b3ee29-0c93-41e9-a2e7-9738608cd4c3",
-            "name": "Health",
-            "url": "http://localhost:3000/health",
-            "method": "GET",
-            "sortNum": 10000,
-            "created": "2025-04-14T13:34:08.830Z",
-            "modified": "2025-04-14T13:53:02.856Z",
-            "headers": []
-        },
-        {
-            "_id": "8855bc00-a10b-4dc2-af85-528d43598a11",
-            "colId": "bcf0437a-a1fe-4c75-b7bd-ff725587b86e",
-            "containerId": "e4b3ee29-0c93-41e9-a2e7-9738608cd4c3",
-            "name": "GetAll",
-            "url": "http://localhost:3000/messages",
-            "method": "GET",
-            "sortNum": 20000,
-            "created": "2025-04-14T13:32:20.668Z",
-            "modified": "2025-04-14T13:52:54.537Z",
-            "headers": []
-        },
-        {
-            "_id": "4d88a388-0fed-47e0-a57e-68a8831e9d45",
-            "colId": "bcf0437a-a1fe-4c75-b7bd-ff725587b86e",
-            "containerId": "e4b3ee29-0c93-41e9-a2e7-9738608cd4c3",
-            "name": "GetById",
-            "url": "http://localhost:3000/messages/1",
-            "method": "GET",
-            "sortNum": 30000,
-            "created": "2025-04-14T13:32:50.034Z",
-            "modified": "2025-04-14T13:53:00.794Z",
-            "headers": []
-        },
-        {
-            "_id": "6038c87a-1459-4d23-9344-7e1ab7410ef4",
-            "colId": "bcf0437a-a1fe-4c75-b7bd-ff725587b86e",
-            "containerId": "e4b3ee29-0c93-41e9-a2e7-9738608cd4c3",
-            "name": "Post",
-            "url": "http://localhost:3000/messages",
-            "method": "POST",
-            "sortNum": 40000,
-            "created": "2025-04-14T13:33:10.843Z",
-            "modified": "2025-04-14T13:53:20.138Z",
-            "headers": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"id\": \"1\",\n  \"text\": \"test\"\n}",
-                "form": []
-            }
-        },
-        {
-            "_id": "54121267-4351-4584-982f-5bed3f058e94",
-            "colId": "bcf0437a-a1fe-4c75-b7bd-ff725587b86e",
-            "containerId": "e4b3ee29-0c93-41e9-a2e7-9738608cd4c3",
-            "name": "Put",
-            "url": "http://localhost:3000/messages/1",
-            "method": "PUT",
-            "sortNum": 50000,
-            "created": "2025-04-14T13:33:23.403Z",
-            "modified": "2025-04-14T13:53:46.860Z",
-            "headers": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"text\": \"test\"\n}",
-                "form": []
-            }
-        },
-        {
-            "_id": "54929cef-d321-4b56-9e25-e7762d016658",
-            "colId": "bcf0437a-a1fe-4c75-b7bd-ff725587b86e",
-            "containerId": "e4b3ee29-0c93-41e9-a2e7-9738608cd4c3",
-            "name": "Patch",
-            "url": "http://localhost:3000/messages/1",
-            "method": "PATCH",
-            "sortNum": 60000,
-            "created": "2025-04-14T13:33:36.156Z",
-            "modified": "2025-04-14T13:53:59.069Z",
-            "headers": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"text\": \"test\"\n}",
-                "form": []
-            }
-        },
-        {
-            "_id": "7e2c0071-4fa6-402b-a80f-3cd2aab11b0e",
-            "colId": "bcf0437a-a1fe-4c75-b7bd-ff725587b86e",
-            "containerId": "e4b3ee29-0c93-41e9-a2e7-9738608cd4c3",
-            "name": "Delete",
-            "url": "http://localhost:3000/messages/1",
-            "method": "DELETE",
-            "sortNum": 70000,
-            "created": "2025-04-14T13:33:45.582Z",
-            "modified": "2025-04-14T13:57:05.009Z",
-            "headers": []
-        }
-    ],
-    "ref": "LJPadTI7EurXngpb5hfvV3aN7HkNFxXLGQDXt6vPuxdN7JogDqKpsg7mGdlYoHP7R6K33m080LFP_3xo1_nRUg"
-}
+This project was "created" by Hazem Gharib
 
 EOL
 
@@ -421,7 +338,7 @@ EOL
 git add .
 git commit -m "Initial commit"
 # Print the instructions
-echo "Project $1 created successfully!"
+echo "Project $1 "created" successfully!"
 echo " Running the app in development..."
 echo " Open your browser and go to http://localhost:3000"
 # Run the app
